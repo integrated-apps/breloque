@@ -25,10 +25,14 @@ import com.integratedapps.breloque.commons.api.data.StorageConfig;
  *
  * @author Kir Sorokin, kir.sorokin@integrated-apps.com
  */
-@StorageConfig
+@StorageConfig(
+        overwriteOnUpdate = true)
 public class DummyEntity extends Entity {
 
     private int dummyInt;
+
+    @StorageConfig(
+            skip = true)
     private String dummyString;
 
     public int getDummyInt(
