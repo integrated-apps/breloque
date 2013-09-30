@@ -28,24 +28,24 @@
 
     <parent>
         <groupId>com.integrated-apps.breloque</groupId>
-        <artifactId>commons</artifactId>
+        <artifactId>modules-locator</artifactId>
         <version>3.0.0-SNAPSHOT</version>
         <relativePath>..</relativePath>
     </parent>
 
     <groupId>com.integrated-apps.breloque</groupId>
-    <artifactId>commons-api</artifactId>
+    <artifactId>modules-locator-impl</artifactId>
 
     <packaging>bundle</packaging>
 
-    <name>Breloque :: Commons :: API</name>
+    <name>Breloque :: Modules :: Locator :: Impl</name>
     <description>
 
     </description>
     <url>https://github.com/integrated-apps/breloque</url>
 
     <properties>
-        <breloque.root>../../..</breloque.root>
+        <breloque.root>../../../..</breloque.root>
     </properties>
 
     <build>
@@ -61,17 +61,17 @@
                 <configuration>
                     <instructions>
                         <Import-Package>
+                            com.integratedapps.breloque.commons.api.data,
                             com.integratedapps.breloque.commons.utils,
+                            com.integratedapps.breloque.modules.locator.api,
+                            com.integratedapps.breloque.modules.locator.api.entities,
                             org.osgi.framework,
                             org.osgi.service.blueprint
                         </Import-Package>
                         <Export-Package>
-                            com.integratedapps.breloque.commons.api.data,
-                            com.integratedapps.breloque.commons.api.expressions,
-                            com.integratedapps.breloque.commons.api.scripting
                         </Export-Package>
                         <Bundle-Activator>
-                            com.integratedapps.breloque.commons.api.osgi.Activator
+                            com.integratedapps.breloque.modules.locator.impl.osgi.Activator
                         </Bundle-Activator>
                     </instructions>
                 </configuration>
@@ -82,7 +82,17 @@
     <dependencies>
         <dependency>
             <groupId>com.integrated-apps.breloque</groupId>
+            <artifactId>commons-api</artifactId>
+            <version>${project.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>com.integrated-apps.breloque</groupId>
             <artifactId>commons-utils</artifactId>
+            <version>${project.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>com.integrated-apps.breloque</groupId>
+            <artifactId>modules-locator-api</artifactId>
             <version>${project.version}</version>
         </dependency>
         <dependency>

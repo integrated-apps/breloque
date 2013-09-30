@@ -28,26 +28,25 @@
 
     <parent>
         <groupId>com.integrated-apps.breloque</groupId>
-        <artifactId>commons</artifactId>
+        <artifactId>modules</artifactId>
         <version>3.0.0-SNAPSHOT</version>
         <relativePath>..</relativePath>
     </parent>
 
     <groupId>com.integrated-apps.breloque</groupId>
-    <artifactId>commons-impl</artifactId>
+    <artifactId>modules-locator</artifactId>
 
     <packaging>pom</packaging>
 
-    <name>Breloque :: Commons :: Impl</name>
+    <name>Breloque :: Modules :: Locator</name>
     <description>
 
     </description>
     <url>https://github.com/integrated-apps/breloque</url>
 
     <modules>
-        <module>data</module>
-        <module>expressions</module>
-        <module>scripting</module>
+        <module>api</module>
+        <module>impl</module>
     </modules>
 
     <properties>

@@ -27,14 +27,14 @@
     <modelVersion>4.0.0</modelVersion>
 
     <parent>
-        <groupId>com.integrated-apps.breloque.commons</groupId>
-        <artifactId>impl</artifactId>
+        <groupId>com.integrated-apps.breloque</groupId>
+        <artifactId>commons-impl</artifactId>
         <version>3.0.0-SNAPSHOT</version>
         <relativePath>..</relativePath>
     </parent>
 
-    <groupId>com.integrated-apps.breloque.commons.impl</groupId>
-    <artifactId>scripting</artifactId>
+    <groupId>com.integrated-apps.breloque</groupId>
+    <artifactId>commons-impl-scripting</artifactId>
 
     <packaging>bundle</packaging>
 
@@ -79,13 +79,13 @@
 
     <dependencies>
         <dependency>
-            <groupId>com.integrated-apps.breloque.commons</groupId>
-            <artifactId>api</artifactId>
+            <groupId>com.integrated-apps.breloque</groupId>
+            <artifactId>commons-api</artifactId>
             <version>${project.version}</version>
         </dependency>
         <dependency>
-            <groupId>com.integrated-apps.breloque.commons</groupId>
-            <artifactId>utils</artifactId>
+            <groupId>com.integrated-apps.breloque</groupId>
+            <artifactId>commons-utils</artifactId>
             <version>${project.version}</version>
         </dependency>
         <dependency>

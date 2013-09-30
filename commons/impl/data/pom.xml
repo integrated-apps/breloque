@@ -28,24 +28,24 @@
 
     <parent>
         <groupId>com.integrated-apps.breloque</groupId>
-        <artifactId>commons</artifactId>
+        <artifactId>commons-impl</artifactId>
         <version>3.0.0-SNAPSHOT</version>
         <relativePath>..</relativePath>
     </parent>
 
     <groupId>com.integrated-apps.breloque</groupId>
-    <artifactId>commons-api</artifactId>
+    <artifactId>commons-impl-data</artifactId>
 
     <packaging>bundle</packaging>
 
-    <name>Breloque :: Commons :: API</name>
+    <name>Breloque :: Commons :: Impl :: Data</name>
     <description>
 
     </description>
     <url>https://github.com/integrated-apps/breloque</url>
 
     <properties>
-        <breloque.root>../../..</breloque.root>
+        <breloque.root>../../../..</breloque.root>
     </properties>
 
     <build>
@@ -61,17 +61,15 @@
                 <configuration>
                     <instructions>
                         <Import-Package>
-                            com.integratedapps.breloque.commons.utils,
+                            com.integratedapps.breloque.commons.api.data,
                             org.osgi.framework,
                             org.osgi.service.blueprint
                         </Import-Package>
                         <Export-Package>
-                            com.integratedapps.breloque.commons.api.data,
-                            com.integratedapps.breloque.commons.api.expressions,
-                            com.integratedapps.breloque.commons.api.scripting
+                            com.integratedapps.breloque.commons.impl.data.spi
                         </Export-Package>
                         <Bundle-Activator>
-                            com.integratedapps.breloque.commons.api.osgi.Activator
+                            com.integratedapps.breloque.commons.impl.data.osgi.Activator
                         </Bundle-Activator>
                     </instructions>
                 </configuration>
@@ -80,6 +78,11 @@
     </build>
 
     <dependencies>
+        <dependency>
+            <groupId>com.integrated-apps.breloque</groupId>
+            <artifactId>commons-api</artifactId>
+            <version>${project.version}</version>
+        </dependency>
         <dependency>
             <groupId>com.integrated-apps.breloque</groupId>
             <artifactId>commons-utils</artifactId>

@@ -40,6 +40,7 @@
 
     <modules>
         <module>commons</module>
+        <module>modules</module>
     </modules>
 
     <properties>
