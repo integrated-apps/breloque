@@ -36,13 +36,6 @@ public class Script extends Entity {
         super();
     }
 
-    public Script(
-            final long id,
-            final int version) {
-
-        super(id, version);
-    }
-
     public String getMimeType(
             ) {
 

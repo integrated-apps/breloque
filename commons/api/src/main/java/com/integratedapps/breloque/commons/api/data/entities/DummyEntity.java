@@ -16,7 +16,7 @@
  *  DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
  *  OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
-package com.integratedapps.breloque.modules.locator.api.entities;
+package com.integratedapps.breloque.commons.api.data.entities;
 
 import com.integratedapps.breloque.commons.api.data.Entity;
 import com.integratedapps.breloque.commons.api.data.StorageConfig;
@@ -26,68 +26,33 @@ import com.integratedapps.breloque.commons.api.data.StorageConfig;
  * @author Kir Sorokin, kir.sorokin@integrated-apps.com
  */
 @StorageConfig
-public class Mapping extends Entity {
+public class DummyEntity extends Entity {
 
-    private String subject;
+    private int dummyInt;
+    private String dummyString;
 
-    private long entityId;
-
-    private long businessRuleId;
-
-    private int index;
-
-    public Mapping(
+    public int getDummyInt(
             ) {
 
-        super();
+        return dummyInt;
     }
 
-    public String getSubject(
+    public void setDummyInt(
+            final int dummyInt) {
+
+        this.dummyInt = dummyInt;
+    }
+
+    public String getDummyString(
             ) {
 
-        return subject;
+        return dummyString;
     }
 
-    public void setSubject(
-            final String subject) {
+    public void setDummyString(
+            final String dummyString) {
 
-        this.subject = subject;
-    }
-
-    public long getEntityId(
-            ) {
-
-        return entityId;
-    }
-
-    public void setEntityId(
-            final long entityId) {
-
-        this.entityId = entityId;
-    }
-
-    public long getBusinessRuleId(
-            ) {
-
-        return businessRuleId;
-    }
-
-    public void setBusinessRuleId(
-            final long businessRuleId) {
-
-        this.businessRuleId = businessRuleId;
-    }
-
-    public int getIndex(
-            ) {
-
-        return index;
-    }
-
-    public void setIndex(
-            final int index) {
-
-        this.index = index;
+        this.dummyString = dummyString;
     }
 
 }

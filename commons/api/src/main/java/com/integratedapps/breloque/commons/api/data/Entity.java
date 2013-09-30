@@ -34,14 +34,6 @@ public abstract class Entity {
         this.version = DEFAULT_VERSION;
     }
 
-    protected Entity(
-            final long id,
-            final int version) {
-
-        this.id = id;
-        this.version = version;
-    }
-
     public final long getId(
             ) {
 
@@ -66,7 +58,7 @@ public abstract class Entity {
         this.version = version;
     }
 
-    ////////////////////////////////////////////////////////////////////////////////////////////////
+    ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     // Constants
 
     public static final long DEFAULT_ID = -1L;
