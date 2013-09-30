@@ -19,7 +19,7 @@
 package com.integratedapps.breloque.commons.impl.data;
 
 import com.integratedapps.breloque.commons.api.data.Entity;
-import com.integratedapps.breloque.commons.api.data.StorageAccessObject;
+import com.integratedapps.breloque.commons.api.data.StorageManager;
 import com.integratedapps.breloque.commons.api.data.StorageException;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -30,13 +30,13 @@ import java.util.Map;
  *
  * @author Kir Sorokin, kir.sorokin@integrated-apps.com
  */
-public final class MemoryStorageAccessObjectImpl implements StorageAccessObject {
+public final class InMemoryStorageManager implements StorageManager {
 
     private long maxId;
 
     private Map<String, List<Entity>> entities;
 
-    public MemoryStorageAccessObjectImpl(
+    public InMemoryStorageManager(
             ) {
 
         this.maxId = INITIAL_ID;

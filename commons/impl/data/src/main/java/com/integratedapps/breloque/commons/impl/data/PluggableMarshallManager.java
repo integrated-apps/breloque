@@ -18,9 +18,9 @@
  */
 package com.integratedapps.breloque.commons.impl.data;
 
-import com.integratedapps.breloque.commons.api.data.MarshalAccessObject;
-import com.integratedapps.breloque.commons.api.data.MarshalException;
-import com.integratedapps.breloque.commons.impl.data.spi.Marshaler;
+import com.integratedapps.breloque.commons.api.data.MarshallManager;
+import com.integratedapps.breloque.commons.api.data.MarshallException;
+import com.integratedapps.breloque.commons.impl.data.spi.MarshallManagerPlugin;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -29,37 +29,37 @@ import java.util.Set;
  *
  * @author Kir Sorokin, kir.sorokin@integrated-apps.com
  */
-public class PluggableMarshalAccessObjectImpl implements MarshalAccessObject {
+public class PluggableMarshallManager implements MarshallManager {
 
-    private List<Marshaler> marshalers;
+    private List<MarshallManagerPlugin> marshalers;
 
     @Override
     public String marshal(
             final Object entity,
-            final String mimeType) throws MarshalException {
+            final String mimeType) throws MarshallException {
 
-        for (Marshaler marshaler : marshalers) {
+        for (MarshallManagerPlugin marshaler : marshalers) {
             if (marshaler.getMimeType().equals(mimeType)) {
                 return marshaler.marshal(entity);
             }
         }
 
-        throw new MarshalException("Unsupported mime type: '" + mimeType + "'.");
+        throw new MarshallException("Unsupported mime type: '" + mimeType + "'.");
     }
 
     @Override
     public <T> T unmarshal(
             final String entity,
             final String mimeType,
-            final Class<T> clazz) throws MarshalException {
+            final Class<T> clazz) throws MarshallException {
 
-        for (Marshaler marshaler : marshalers) {
+        for (MarshallManagerPlugin marshaler : marshalers) {
             if (marshaler.getMimeType().equals(mimeType)) {
                 return marshaler.unmarshal(entity, clazz);
             }
         }
 
-        throw new MarshalException("Unsupported mime type: '" + mimeType + "'.");
+        throw new MarshallException("Unsupported mime type: '" + mimeType + "'.");
     }
 
     @Override
@@ -67,7 +67,7 @@ public class PluggableMarshalAccessObjectImpl implements MarshalAccessObject {
             ) {
 
         final Set<String> result = new HashSet<>();
-        for (Marshaler marshaler : marshalers) {
+        for (MarshallManagerPlugin marshaler : marshalers) {
             result.add(marshaler.getMimeType());
         }
 
@@ -75,7 +75,7 @@ public class PluggableMarshalAccessObjectImpl implements MarshalAccessObject {
     }
 
     public void setMarshalers(
-            final List<Marshaler> marshalers) {
+            final List<MarshallManagerPlugin> marshalers) {
 
         this.marshalers = marshalers;
     }

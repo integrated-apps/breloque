@@ -18,24 +18,40 @@
  */
 package com.integratedapps.breloque.commons.api.data;
 
-import java.util.Set;
-
 /**
+ * An error which occurs if a marshaling operation fails.
  *
  * @author Kir Sorokin, kir.sorokin@integrated-apps.com
  */
-public interface MarshalAccessObject {
+public final class MarshallException extends Exception {
 
-    String marshal(
-            Object entity,
-            String mimeType) throws MarshalException;
+    /**
+     * Creates a new <code>MarshalException</code>.
+     *
+     * @param message
+     *      Error message.
+     * @param cause
+     *      An internal exception which caused this one to be thrown.
+     */
+    public MarshallException(
+            final String message) {
 
-    <T> T unmarshal(
-            String entity,
-            String mimeType,
-            Class<T> clazz) throws MarshalException;
+        super(message);
+    }
 
-    Set<String> listMimeTypes(
-            );
+    /**
+     * Creates a new <code>MarshalException</code>.
+     *
+     * @param message
+     *      Error message.
+     * @param cause
+     *      An internal exception which caused this one to be thrown.
+     */
+    public MarshallException(
+            final String message,
+            final Throwable cause) {
+
+        super(message, cause);
+    }
 
 }

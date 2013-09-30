@@ -19,13 +19,13 @@
 package com.integratedapps.breloque.modules.locator.api.entities;
 
 import com.integratedapps.breloque.commons.api.data.Entity;
-import com.integratedapps.breloque.commons.api.data.Storage;
+import com.integratedapps.breloque.commons.api.data.StorageConfig;
 
 /**
  *
  * @author Kir Sorokin, kir.sorokin@integrated-apps.com
  */
-@Storage
+@StorageConfig
 public class Mapping extends Entity {
 
     private String subject;

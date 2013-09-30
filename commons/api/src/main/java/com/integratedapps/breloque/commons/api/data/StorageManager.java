@@ -18,28 +18,27 @@
  */
 package com.integratedapps.breloque.commons.api.data;
 
-import java.lang.annotation.ElementType;
-import java.lang.annotation.Retention;
-import java.lang.annotation.RetentionPolicy;
-import java.lang.annotation.Target;
+import java.util.List;
 
 /**
  *
  * @author Kir Sorokin, kir.sorokin@integrated-apps.com
  */
-@Retention(RetentionPolicy.RUNTIME)
-@Target({ElementType.TYPE, ElementType.FIELD})
-public @interface Storage {
+public interface StorageManager {
 
-    boolean overwriteOnUpdate() default false;
+    <T extends Entity> List<T> list(
+            Class<T> clazz) throws StorageException;
 
-    /**
-     * Whether the target should be skipped when saving an entity to the storage.
-     *
-     * @return
-     *      <code>True</code> if the target should not be saved to the storage, <code>false</code>
-     *      otherwise. Also, <code>false</code> is the default value.
-     */
-    boolean skip() default false;
+    <T extends Entity> T get(
+            long id,
+            Class<T> clazz) throws StorageException;
+
+    <T extends Entity> T get(
+            long id,
+            int version,
+            Class<T> clazz) throws StorageException;
+
+    <T extends Entity> T store(
+            T entity) throws StorageException;
 
 }

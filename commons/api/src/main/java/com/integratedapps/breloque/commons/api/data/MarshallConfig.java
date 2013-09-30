@@ -16,24 +16,21 @@
  *  DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
  *  OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
-package com.integratedapps.breloque.commons.impl.data.spi;
+package com.integratedapps.breloque.commons.api.data;
 
-import com.integratedapps.breloque.commons.api.data.MarshalException;
+import java.lang.annotation.ElementType;
+import java.lang.annotation.Retention;
+import java.lang.annotation.RetentionPolicy;
+import java.lang.annotation.Target;
 
 /**
  *
  * @author Kir Sorokin, kir.sorokin@integrated-apps.com
  */
-public interface Marshaler {
+@Retention(RetentionPolicy.RUNTIME)
+@Target({ElementType.TYPE, ElementType.FIELD})
+public @interface MarshallConfig {
 
-    String getMimeType(
-            );
-
-    String marshal(
-            Object entity) throws MarshalException;
-
-    <T> T unmarshal(
-            String entity,
-            Class<T> clazz) throws MarshalException;
+    boolean skip() default false;
 
 }
