@@ -21,6 +21,7 @@ package com.integratedapps.breloque.commons.impl.data;
 import com.integratedapps.breloque.commons.api.data.Entity;
 import com.integratedapps.breloque.commons.api.data.StorageManager;
 import com.integratedapps.breloque.commons.api.data.StorageException;
+import com.integratedapps.breloque.commons.utils.ClassUtils;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -43,6 +44,8 @@ public final class InMemoryStorageManager implements StorageManager {
         this.entities = new HashMap<>();
     }
 
+    // Accessing, storing and deleting entities  - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
     @Override
     @SuppressWarnings("unchecked")
     public <T extends Entity> List<T> list(
@@ -51,16 +54,45 @@ public final class InMemoryStorageManager implements StorageManager {
         final String key = clazz.getName();
 
         if (entities.containsKey(key)) {
-            final List<T> result = new ArrayList<>();
+            final Map<Long, T> result = new HashMap<>();
 
-            for (Entity current : entities.get(key)) {
-                result.add((T) current);
+            final List<Entity> keyedEntities = entities.get(key);
+            for (Entity candidate : keyedEntities) {
+                if (!result.containsKey(candidate.getId())
+                        || (result.get(candidate.getId()).getVersion() < candidate.getVersion())) {
+
+                    result.put(candidate.getId(), (T) candidate);
+                }
             }
 
-            return result;
+            return new ArrayList<>(result.values());
         } else {
             return new ArrayList<>();
         }
+    }
+
+    @Override
+    public Entity get(
+            final long id) throws StorageException {
+
+        Entity result = null;
+
+        final List<String> keys = new ArrayList<>(entities.keySet());
+        for (String key : keys) {
+            final List<Entity> keydEntities = new ArrayList<>(entities.get(key));
+
+            for (Entity candidate : keydEntities) {
+                if ((candidate.getId() == id) && ((result == null) || (result.getVersion() < candidate.getVersion()))) {
+                    result = candidate;
+                }
+            }
+
+            if (result != null) {
+                break;
+            }
+        }
+
+        return result;
     }
 
     @Override
@@ -72,16 +104,35 @@ public final class InMemoryStorageManager implements StorageManager {
         final String key = clazz.getName();
 
         if (entities.containsKey(key)) {
-            Entity max = null;
+            Entity result = null;
 
-            for (Entity current : entities.get(key)) {
-                if ((current.getId() == id)
-                        && ((max == null) || (max.getVersion() < current.getVersion()))) {
-                    max = current;
+            final List<Entity> keyedEntities = new ArrayList<>(entities.get(key));
+            for (Entity candidate : keyedEntities) {
+                if ((candidate.getId() == id) && ((result == null) || (result.getVersion() < candidate.getVersion()))) {
+                    result = candidate;
                 }
             }
 
-            return (T) max;
+            return (T) result;
+        }
+
+        return null;
+    }
+
+    @Override
+    public Entity get(
+            final long id,
+            final int version) throws StorageException {
+
+        final List<String> keys = new ArrayList<>(entities.keySet());
+        for (String key : keys) {
+            final List<Entity> keydEntities = new ArrayList<>(entities.get(key));
+
+            for (Entity candidate : keydEntities) {
+                if ((candidate.getId() == id) && (candidate.getVersion() == version)) {
+                    return candidate;
+                }
+            }
         }
 
         return null;
@@ -97,9 +148,9 @@ public final class InMemoryStorageManager implements StorageManager {
         final String key = clazz.getName();
 
         if (entities.containsKey(key)) {
-            for (Entity current : entities.get(key)) {
-                if ((current.getId() == id) && (current.getVersion() == version)) {
-                    return (T) current;
+            for (Entity candidate : entities.get(key)) {
+                if ((candidate.getId() == id) && (candidate.getVersion() == version)) {
+                    return (T) candidate;
                 }
             }
         }
@@ -134,11 +185,206 @@ public final class InMemoryStorageManager implements StorageManager {
         return entity;
     }
 
-    ////////////////////////////////////////////////////////////////////////////////////////////////
+    @Override
+    public Entity delete(
+            final long id) throws StorageException {
+
+        Entity result = null;
+
+        final List<String> keys = new ArrayList<>(entities.keySet());
+        for (String key : keys) {
+            final List<Entity> keyedEntities = new ArrayList<>(entities.get(key));
+
+            for (int i = 0; i < keyedEntities.size(); i++) {
+                final Entity candidate = keyedEntities.get(i);
+
+                if ((candidate.getId() == id)) {
+                    if ((result == null) || (result.getVersion() < candidate.getVersion())) {
+                        result = candidate;
+                    }
+
+                    entities.get(key).remove(candidate);
+                }
+
+            }
+
+            if (result != null) {
+                break;
+            }
+        }
+
+        return result;
+    }
+
+    @Override
+    @SuppressWarnings("unchecked")
+    public <T extends Entity> T delete(
+            final long id,
+            final Class<T> clazz) throws StorageException {
+
+        final String key = clazz.getName();
+
+        if (entities.containsKey(key)) {
+            Entity result = null;
+
+            final List<Entity> keyedEntities = new ArrayList<>(entities.get(key));
+            for (Entity candidate : keyedEntities) {
+                if ((candidate.getId() == id)) {
+                    if ((result == null) || (result.getVersion() < candidate.getVersion())) {
+                        result = candidate;
+                    }
+
+                    entities.get(key).remove(candidate);
+                }
+            }
+
+            return (T) result;
+        }
+
+        return null;
+    }
+
+    @Override
+    public Entity delete(
+            final long id,
+            final int version) throws StorageException {
+
+        final List<String> keys = new ArrayList<>(entities.keySet());
+        for (String key : keys) {
+            final List<Entity> keyedEntities = new ArrayList<>(entities.get(key));
+
+            for (int i = 0; i < keyedEntities.size(); i++) {
+                final Entity candidate = keyedEntities.get(i);
+
+                if ((candidate.getId() == id) && (candidate.getVersion() == version)) {
+                    entities.get(key).remove(candidate);
+
+                    return candidate;
+                }
+
+            }
+        }
+
+        return null;
+    }
+
+    @Override
+    @SuppressWarnings("unchecked")
+    public <T extends Entity> T delete(
+            final long id,
+            final int version,
+            final Class<T> clazz) throws StorageException {
+
+        final String key = clazz.getName();
+
+        if (entities.containsKey(key)) {
+            final List<Entity> keyedEntities = new ArrayList<>(entities.get(key));
+            for (Entity candidate : keyedEntities) {
+                if ((candidate.getId() == id) && (candidate.getVersion() == version)) {
+                    entities.get(key).remove(candidate);
+
+                    return (T) candidate;
+                }
+            }
+        }
+
+        return null;
+    }
+
+    // Searching - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+    @Override
+    @SuppressWarnings("unchecked")
+    public <T extends Entity> List<T> search(
+            final Map<String, Object> query,
+            final Class<T> clazz) throws StorageException {
+
+        try {
+            final String key = clazz.getName();
+
+            if (!entities.containsKey(key)) {
+                return new ArrayList<>();
+            }
+
+            final Map<Long, T> result = new HashMap<>();
+
+            for (Entity candidate : entities.get(key)) {
+                boolean allMatch = true;
+                for (String fieldName : query.keySet()) {
+                    if (!ClassUtils.getFieldValue(candidate, fieldName).equals(query.get(fieldName))) {
+                        allMatch = false;
+                        break;
+                    }
+                }
+
+                if (allMatch) {
+                    if (!result.containsKey(candidate.getId())
+                            || (result.get(candidate.getId()).getVersion() < candidate.getVersion())) {
+
+                        result.put(candidate.getId(), (T) candidate);
+                    }
+                }
+            }
+
+            return new ArrayList<>(result.values());
+        } catch (Exception e) {
+            throw new StorageException("Failed to do a search on entities of class '" + clazz.getName() + "'.", e);
+        }
+    }
+
+    // Handling transactions - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+    @Override
+    public String begin(
+            ) throws StorageException {
+
+        // No support for transactions.
+
+        return TRANSACTION_ID;
+    }
+
+    @Override
+    public void begin(
+            final String trid) throws StorageException {
+
+        // No support for transactions.
+    }
+
+    @Override
+    public void commit(
+            ) throws StorageException {
+
+        // No support for transactions.
+    }
+
+    @Override
+    public void commit(
+            final String trid) throws StorageException {
+
+        // No support for transactions.
+    }
+
+    @Override
+    public void rollback(
+            ) throws StorageException {
+
+        // No support for transactions.
+    }
+
+    @Override
+    public void rollback(
+            final String trid) throws StorageException {
+
+        // No support for transactions.
+    }
+
+    ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     // Constants
 
     private static final long INITIAL_ID = 1L;
 
     private static final int INITIAL_VERSION = 1;
+
+    private static final String TRANSACTION_ID = "";
 
 }

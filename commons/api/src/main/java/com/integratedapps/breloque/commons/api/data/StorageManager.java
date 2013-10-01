@@ -19,6 +19,7 @@
 package com.integratedapps.breloque.commons.api.data;
 
 import java.util.List;
+import java.util.Map;
 
 /**
  *
@@ -26,12 +27,21 @@ import java.util.List;
  */
 public interface StorageManager {
 
+    // Accessing, storing and deleting entities  - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
     <T extends Entity> List<T> list(
             Class<T> clazz) throws StorageException;
+
+    Entity get(
+            long id) throws StorageException;
 
     <T extends Entity> T get(
             long id,
             Class<T> clazz) throws StorageException;
+
+    Entity get(
+            long id,
+            int version) throws StorageException;
 
     <T extends Entity> T get(
             long id,
@@ -40,5 +50,47 @@ public interface StorageManager {
 
     <T extends Entity> T store(
             T entity) throws StorageException;
+
+    Entity delete(
+            long id) throws StorageException;
+
+    <T extends Entity> T delete(
+            long id,
+            Class<T> clazz) throws StorageException;
+
+    Entity delete(
+            long id,
+            int version) throws StorageException;
+
+    <T extends Entity> T delete(
+            long id,
+            int version,
+            Class<T> clazz) throws StorageException;
+
+    // Searching - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+    <T extends Entity> List<T> search(
+            Map<String, Object> query,
+            Class<T> clazz) throws StorageException;
+
+    // Handling transactions - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+    String begin(
+            ) throws StorageException;
+
+    void begin(
+            String trid) throws StorageException;
+
+    void commit(
+            ) throws StorageException;
+
+    void commit(
+            String trid) throws StorageException;
+
+    void rollback(
+            ) throws StorageException;
+
+    void rollback(
+            String trid) throws StorageException;
 
 }
