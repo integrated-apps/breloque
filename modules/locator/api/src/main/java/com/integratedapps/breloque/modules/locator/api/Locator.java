@@ -28,8 +28,15 @@ import java.util.List;
 public interface Locator {
 
     Entity locate(
+            String subject) throws LocatorException;
+
+    Entity locate(
             String subject,
             Object context) throws LocatorException;
+
+    <T extends Entity> T locate(
+            String subject,
+            Class<T> clazz) throws LocatorException;
 
     <T extends Entity> T locate(
             String subject,
@@ -37,8 +44,15 @@ public interface Locator {
             Class<T> clazz) throws LocatorException;
 
     List<Entity> locateAll(
+            String subject) throws LocatorException;
+
+    List<Entity> locateAll(
             String subject,
             Object context) throws LocatorException;
+
+    <T extends Entity> List<T> locateAll(
+            String subject,
+            Class<T> clazz) throws LocatorException;
 
     <T extends Entity> List<T> locateAll(
             String subject,

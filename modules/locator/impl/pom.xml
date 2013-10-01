@@ -62,6 +62,7 @@
                     <instructions>
                         <Import-Package>
                             com.integratedapps.breloque.commons.api.data,
+                            com.integratedapps.breloque.commons.api.scripting,
                             com.integratedapps.breloque.commons.utils,
                             com.integratedapps.breloque.modules.locator.api,
                             com.integratedapps.breloque.modules.locator.api.entities,
@@ -88,6 +89,12 @@
         <dependency>
             <groupId>com.integrated-apps.breloque</groupId>
             <artifactId>commons-impl-data</artifactId>
+            <version>${project.version}</version>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>com.integrated-apps.breloque</groupId>
+            <artifactId>commons-impl-scripting</artifactId>
             <version>${project.version}</version>
             <scope>test</scope>
         </dependency>
