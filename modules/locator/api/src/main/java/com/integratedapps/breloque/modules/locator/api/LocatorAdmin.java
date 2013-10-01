@@ -34,6 +34,10 @@ public interface LocatorAdmin {
 
     Mapping add(
             String subject,
+            Entity entity) throws LocatorException;
+
+    Mapping add(
+            String subject,
             Entity entity,
             BusinessRule businessRule) throws LocatorException;
 

@@ -70,8 +70,26 @@ public final class LocatorAdminImpl implements LocatorAdmin {
     @Override
     public Mapping add(
             final String subject,
+            final Entity entity) throws LocatorException {
+
+        return add(subject, entity, null);
+    }
+
+    @Override
+    public Mapping add(
+            final String subject,
             final Entity entity,
             final BusinessRule businessRule) throws LocatorException {
+
+        if ((subject == null) || "".equals(subject)) {
+            throw new LocatorException(
+                    "It is not possible to create a mappng with an empty (or null) subject.");
+        }
+
+        if ((entity == null) || (entity.getId() == Entity.DEFAULT_ID)) {
+            throw new LocatorException(
+                    "It is not possible to create a mappng with an empty (or unregistered) entity.");
+        }
 
         final String trid = UUID.randomUUID().toString();
         try {
@@ -94,7 +112,7 @@ public final class LocatorAdminImpl implements LocatorAdmin {
             Mapping mapping = new Mapping();
             mapping.setSubject(subject);
             mapping.setEntityId(entity.getId());
-            mapping.setBusinessRuleId(businessRule.getId());
+            mapping.setBusinessRuleId(businessRule == null ? Entity.DEFAULT_ID : businessRule.getId());
             mapping.setIndex(index);
 
             mapping = storageManager.store(mapping);
