@@ -90,4 +90,9 @@ public class Mapping extends Entity {
         this.index = index;
     }
 
+    ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+    // Constants
+
+    public static final String SUBJECT_FIELD = "subject";
+
 }

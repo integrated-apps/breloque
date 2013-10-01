@@ -87,6 +87,12 @@
         </dependency>
         <dependency>
             <groupId>com.integrated-apps.breloque</groupId>
+            <artifactId>commons-impl-data</artifactId>
+            <version>${project.version}</version>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>com.integrated-apps.breloque</groupId>
             <artifactId>commons-utils</artifactId>
             <version>${project.version}</version>
         </dependency>
