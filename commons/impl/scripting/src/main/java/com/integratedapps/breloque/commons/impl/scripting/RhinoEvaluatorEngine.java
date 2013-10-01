@@ -19,21 +19,54 @@
 package com.integratedapps.breloque.commons.impl.scripting;
 
 import com.integratedapps.breloque.commons.api.scripting.ScriptEvaluationException;
-import com.integratedapps.breloque.commons.impl.scripting.spi.EvaluationEngine;
+import com.integratedapps.breloque.commons.impl.scripting.spi.EvaluatorEngine;
 import java.util.Map;
+import java.util.Map.Entry;
+import org.mozilla.javascript.Context;
+import org.mozilla.javascript.ImporterTopLevel;
+import org.mozilla.javascript.NativeJavaObject;
+import org.mozilla.javascript.Scriptable;
 
 /**
  *
  * @author Kir Sorokin, kir.sorokin@integrated-apps.com
  */
-public class RhinoEngine implements EvaluationEngine {
+public class RhinoEvaluatorEngine implements EvaluatorEngine {
 
     @Override
     public Object evaluate(
             final String script,
             final Map<String, Object> context) throws ScriptEvaluationException {
 
-        throw new UnsupportedOperationException("Not supported yet.");
+        try {
+            final Context rhino = Context.enter();
+            final Scriptable scope = new ImporterTopLevel(rhino);
+
+            for (Entry<String, Object> entry : context.entrySet()) {
+                scope.put(entry.getKey(), scope, entry.getValue());
+            }
+
+            final String code =
+                    "function ___function() { "
+                  + " "
+                  + script
+                  + " "
+                  + "} "
+                  + " "
+                  + "___function(); ";
+
+            Object result = rhino.evaluateString(scope, code, "<cmd>", 1, null);
+
+            if (result instanceof NativeJavaObject) {
+                result = ((NativeJavaObject) result).unwrap();
+            }
+
+            return result;
+        } catch (Exception e) {
+            throw new ScriptEvaluationException("Failed to evaluate the script.", e);
+        } finally {
+            Context.exit();
+        }
     }
 
     @Override

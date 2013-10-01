@@ -31,7 +31,7 @@ import java.util.Map;
  *
  * @author Kir Sorokin, kir.sorokin@integrated-apps.com
  */
-public interface EvaluationEngine {
+public interface EvaluatorEngine {
 
     /**
      * Evaluates the provided script and returns its result.

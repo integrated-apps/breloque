@@ -63,7 +63,24 @@
                         <Import-Package>
                             com.integratedapps.breloque.commons.api.scripting,
                             org.osgi.framework,
-                            org.osgi.service.blueprint
+                            org.osgi.service.blueprint,
+
+                            <!-- Required by Rhino -->
+                            javax.swing,
+                            javax.swing.border,
+                            javax.swing.event,
+                            javax.swing.filechooser,
+                            javax.swing.table,
+                            javax.swing.text,
+                            javax.swing.tree,
+                            javax.xml.namespace,
+                            javax.xml.parsers,
+                            javax.xml.transform,
+                            javax.xml.transform.dom,
+                            javax.xml.transform.stream,
+                            org.apache.xmlbeans,
+                            org.w3c.dom,
+                            org.xml.sax
                         </Import-Package>
                         <Export-Package>
                             com.integratedapps.breloque.commons.impl.scripting.spi
@@ -71,6 +88,9 @@
                         <Bundle-Activator>
                             com.integratedapps.breloque.commons.impl.scripting.osgi.Activator
                         </Bundle-Activator>
+                        <Embed-Dependency>
+                            rhino;groupId=org.mozilla
+                        </Embed-Dependency>
                     </instructions>
                 </configuration>
             </plugin>
@@ -87,6 +107,10 @@
             <groupId>com.integrated-apps.breloque</groupId>
             <artifactId>commons-utils</artifactId>
             <version>${project.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.mozilla</groupId>
+            <artifactId>rhino</artifactId>
         </dependency>
         <dependency>
             <groupId>org.osgi</groupId>

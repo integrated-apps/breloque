@@ -20,7 +20,7 @@ package com.integratedapps.breloque.commons.impl.scripting;
 
 import com.integratedapps.breloque.commons.api.scripting.ScriptEvaluationException;
 import com.integratedapps.breloque.commons.api.scripting.ScriptEvaluator;
-import com.integratedapps.breloque.commons.impl.scripting.spi.EvaluationEngine;
+import com.integratedapps.breloque.commons.impl.scripting.spi.EvaluatorEngine;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
@@ -30,9 +30,9 @@ import java.util.Set;
  *
  * @author Kir Sorokin, kir.sorokin@integrated-apps.com
  */
-public class PluggableEvaluatorImpl implements ScriptEvaluator {
+public class PluggableScriptEvaluator implements ScriptEvaluator {
 
-    private List<EvaluationEngine> engines;
+    private List<EvaluatorEngine> engines;
 
     @Override
     public Object evaluate(
@@ -40,7 +40,7 @@ public class PluggableEvaluatorImpl implements ScriptEvaluator {
             final String mimeType,
             final Map<String, Object> context) throws ScriptEvaluationException {
 
-        for (EvaluationEngine engine : engines) {
+        for (EvaluatorEngine engine : engines) {
             if (engine.getMimeType().equals(mimeType)) {
                 return engine.evaluate(script, context);
             }
@@ -54,7 +54,7 @@ public class PluggableEvaluatorImpl implements ScriptEvaluator {
             ) {
 
         final Set<String> mimeTypes = new HashSet<>(engines.size());
-        for (EvaluationEngine engine : engines) {
+        for (EvaluatorEngine engine : engines) {
             mimeTypes.add(engine.getMimeType());
         }
 
@@ -62,7 +62,7 @@ public class PluggableEvaluatorImpl implements ScriptEvaluator {
     }
 
     public void setEngines(
-            final List<EvaluationEngine> engines) {
+            final List<EvaluatorEngine> engines) {
 
         this.engines = engines;
     }
