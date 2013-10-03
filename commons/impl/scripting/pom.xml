@@ -78,9 +78,22 @@
                             javax.xml.transform,
                             javax.xml.transform.dom,
                             javax.xml.transform.stream,
-                            org.apache.xmlbeans,
                             org.w3c.dom,
-                            org.xml.sax
+                            org.xml.sax,
+
+                            <!-- Additionally required by XML beans -->
+                            com.sun.javadoc;resolution:=optional,
+                            com.sun.tools.javadoc;resolution:=optional,
+                            javax.xml.stream,
+                            javax.xml.stream.util,
+                            org.apache.crimson.jaxp;resolution:=optional,
+                            org.apache.tools.ant;resolution:=optional,
+                            org.apache.tools.ant.taskdefs;resolution:=optional,
+                            org.apache.tools.ant.types;resolution:=optional,
+                            org.apache.xml.resolver;resolution:=optional,
+                            org.apache.xml.resolver.tools;resolution:=optional,
+                            org.xml.sax.ext,
+                            org.xml.sax.helpers
                         </Import-Package>
                         <Export-Package>
                             com.integratedapps.breloque.commons.impl.scripting.spi
@@ -89,7 +102,8 @@
                             com.integratedapps.breloque.commons.impl.scripting.osgi.Activator
                         </Bundle-Activator>
                         <Embed-Dependency>
-                            rhino;groupId=org.mozilla
+                            rhino;groupId=org.mozilla,
+                            xmlbeans;groupId=org.apache.xmlbeans
                         </Embed-Dependency>
                     </instructions>
                 </configuration>
@@ -107,6 +121,10 @@
             <groupId>com.integrated-apps.breloque</groupId>
             <artifactId>commons-utils</artifactId>
             <version>${project.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.xmlbeans</groupId>
+            <artifactId>xmlbeans</artifactId>
         </dependency>
         <dependency>
             <groupId>org.mozilla</groupId>
