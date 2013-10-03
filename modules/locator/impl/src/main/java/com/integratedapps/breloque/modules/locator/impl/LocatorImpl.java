@@ -41,8 +41,8 @@ import java.util.Map;
 public final class LocatorImpl implements Locator {
 
     private StorageManager storageManager;
-    private LocatorAdmin locatorAdmin;
     private ScriptEvaluator scriptEvaluator;
+    private LocatorAdmin locatorAdmin;
 
     @Override
     public Entity locate(
@@ -246,16 +246,16 @@ public final class LocatorImpl implements Locator {
         this.storageManager = storageManager;
     }
 
-    public void setLocatorAdmin(
-            final LocatorAdmin locatorAdmin) {
-
-        this.locatorAdmin = locatorAdmin;
-    }
-
     public void setScriptEvaluator(
             final ScriptEvaluator scriptEvaluator) {
 
         this.scriptEvaluator = scriptEvaluator;
+    }
+
+    public void setLocatorAdmin(
+            final LocatorAdmin locatorAdmin) {
+
+        this.locatorAdmin = locatorAdmin;
     }
 
 }
