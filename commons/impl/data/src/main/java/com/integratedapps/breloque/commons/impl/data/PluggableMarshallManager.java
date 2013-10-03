@@ -31,14 +31,14 @@ import java.util.Set;
  */
 public class PluggableMarshallManager implements MarshallManager {
 
-    private List<MarshallManagerPlugin> marshalers;
+    private List<MarshallManagerPlugin> marshallers;
 
     @Override
     public String marshal(
             final Object entity,
             final String mimeType) throws MarshallException {
 
-        for (MarshallManagerPlugin marshaler : marshalers) {
+        for (MarshallManagerPlugin marshaler : marshallers) {
             if (marshaler.getMimeType().equals(mimeType)) {
                 return marshaler.marshal(entity);
             }
@@ -53,7 +53,7 @@ public class PluggableMarshallManager implements MarshallManager {
             final String mimeType,
             final Class<T> clazz) throws MarshallException {
 
-        for (MarshallManagerPlugin marshaler : marshalers) {
+        for (MarshallManagerPlugin marshaler : marshallers) {
             if (marshaler.getMimeType().equals(mimeType)) {
                 return marshaler.unmarshal(entity, clazz);
             }
@@ -67,17 +67,17 @@ public class PluggableMarshallManager implements MarshallManager {
             ) {
 
         final Set<String> result = new HashSet<>();
-        for (MarshallManagerPlugin marshaler : marshalers) {
+        for (MarshallManagerPlugin marshaler : marshallers) {
             result.add(marshaler.getMimeType());
         }
 
         return result;
     }
 
-    public void setMarshalers(
+    public void setMarshallers(
             final List<MarshallManagerPlugin> marshalers) {
 
-        this.marshalers = marshalers;
+        this.marshallers = marshalers;
     }
 
 }
