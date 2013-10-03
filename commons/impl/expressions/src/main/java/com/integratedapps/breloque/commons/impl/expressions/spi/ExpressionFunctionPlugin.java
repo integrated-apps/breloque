@@ -24,7 +24,7 @@ import com.integratedapps.breloque.commons.api.expressions.ExpressionEvaluationE
  *
  * @author Kir Sorokin, kir.sorokin@integrated-apps.com
  */
-public interface ExpressionFunction {
+public interface ExpressionFunctionPlugin {
 
     String getName(
             );

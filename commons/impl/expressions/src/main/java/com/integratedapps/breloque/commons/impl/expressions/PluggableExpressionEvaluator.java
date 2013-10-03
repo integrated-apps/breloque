@@ -20,16 +20,16 @@ package com.integratedapps.breloque.commons.impl.expressions;
 
 import com.integratedapps.breloque.commons.api.expressions.ExpressionEvaluationException;
 import com.integratedapps.breloque.commons.api.expressions.ExpressionEvaluator;
-import com.integratedapps.breloque.commons.impl.expressions.spi.ExpressionFunction;
+import com.integratedapps.breloque.commons.impl.expressions.spi.ExpressionFunctionPlugin;
 import java.util.List;
 
 /**
  *
  * @author Kir Sorokin, kir.sorokin@integrated-apps.com
  */
-public class PluggableEvaluatorImpl implements ExpressionEvaluator {
+public class PluggableExpressionEvaluator implements ExpressionEvaluator {
 
-    private List<ExpressionFunction> functions;
+    private List<ExpressionFunctionPlugin> functions;
 
     @Override
     public Object evaluate(
@@ -49,7 +49,7 @@ public class PluggableEvaluatorImpl implements ExpressionEvaluator {
     }
 
     public void setFunctions(
-            final List<ExpressionFunction> functions) {
+            final List<ExpressionFunctionPlugin> functions) {
 
         this.functions = functions;
     }
