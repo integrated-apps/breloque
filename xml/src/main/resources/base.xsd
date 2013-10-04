@@ -1,0 +1,185 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<schema targetNamespace="http://integrated-apps.com/ns/breloque"
+        xmlns="http://www.w3.org/2001/XMLSchema"
+        xmlns:breloque="http://integrated-apps.com/ns/breloque"
+        xmlns:jaxb="http://java.sun.com/xml/ns/jaxb"
+        xmlns:jaxws="http://java.sun.com/xml/ns/jaxws"
+        xmlns:tns="http://integrated-apps.com/ns/breloque"
+        xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        elementFormDefault="qualified"
+        jaxb:version="2.0"
+        xsi:schemaLocation="
+            http://java.sun.com/xml/ns/jaxb
+                http://java.sun.com/xml/ns/jaxb/bindingschema_2_0.xsd
+            http://java.sun.com/xml/ns/jaxws
+                http://java.sun.com/xml/ns/jaxws/wsdl_customizationschema_2_0.xsd">
+
+    <annotation>
+        <appinfo>
+            <breloque:version>${project.version}</breloque:version>
+
+            <jaxb:schemaBindings>
+                <jaxb:package name="com.integratedapps.ns.breloque.types"/>
+            </jaxb:schemaBindings>
+        </appinfo>
+    </annotation>
+
+    <!-- =========================================================================================================== -->
+
+    <!-- Базовая структура запросов и ответов -->
+
+    <element name="request" type="tns:requestType"/>
+    <element name="response" type="tns:responseType"/>
+
+    <complexType name="requestType">
+        <annotation>
+            <appinfo>
+                <jaxb:class name="WsRequest"/>
+            </appinfo>
+        </annotation>
+
+        <sequence>
+            <element name="callerId" type="string" minOccurs="0"/>
+            <element name="messageExchangeId" type="string" minOccurs="0"/>
+            <element name="metaData" type="tns:metaDataType" minOccurs="0"/>
+        </sequence>
+    </complexType>
+
+    <complexType name="responseType">
+        <annotation>
+            <appinfo>
+                <jaxb:class name="WsResponse"/>
+            </appinfo>
+        </annotation>
+
+        <sequence>
+            <element name="callerId" type="string" minOccurs="0"/>
+            <element name="calleeId" type="string"/>
+            <element name="messageExchangeId" type="string" minOccurs="0"/>
+            <element name="metaData" type="tns:metaDataType" minOccurs="0"/>
+        </sequence>
+    </complexType>
+
+    <!-- =========================================================================================================== -->
+
+    <!-- Мета-данные -->
+
+    <element name="metaData" type="tns:metaDataType"/>
+
+    <complexType name="metaDataType">
+        <annotation>
+            <appinfo>
+                <jaxb:class name="WsMetaData"/>
+            </appinfo>
+        </annotation>
+
+        <sequence>
+            <element name="property" minOccurs="0" maxOccurs="unbounded">
+                <annotation>
+                    <appinfo>
+                        <jaxb:property name="properties"/>
+                    </appinfo>
+                </annotation>
+                <complexType>
+                    <annotation>
+                        <appinfo>
+                            <jaxb:class name="Property"/>
+                        </appinfo>
+                    </annotation>
+                    <simpleContent>
+                        <extension base="string">
+                            <attribute name="name" type="string"/>
+                        </extension>
+                    </simpleContent>
+                </complexType>
+            </element>
+        </sequence>
+    </complexType>
+
+    <!-- =========================================================================================================== -->
+
+    <!-- Данные об ошибках, статусе -->
+
+    <element name="systemError" type="tns:errorType"/>
+    <element name="businessError" type="tns:errorType"/>
+
+    <element name="status" type="tns:statusType"/>
+
+    <complexType name="errorType">
+        <annotation>
+            <appinfo>
+                <jaxb:class name="WsError"/>
+            </appinfo>
+        </annotation>
+
+        <complexContent>
+            <extension base="tns:codeAndMessageAndDetailsType"/>
+        </complexContent>
+    </complexType>
+
+    <complexType name="statusType">
+        <annotation>
+            <appinfo>
+                <jaxb:class name="WsStatus"/>
+            </appinfo>
+        </annotation>
+
+        <complexContent>
+            <extension base="tns:codeAndMessageAndDetailsType"/>
+        </complexContent>
+    </complexType>
+
+    <complexType name="codeAndMessageAndDetailsType">
+        <annotation>
+            <appinfo>
+                <jaxb:class name="WsCodeAndMessageAndDetails"/>
+            </appinfo>
+        </annotation>
+
+        <sequence>
+            <element name="code" type="string"/>
+            <element name="message" type="string"/>
+            <element name="details" type="tns:metaDataType" minOccurs="0"/>
+        </sequence>
+    </complexType>
+
+    <!-- =========================================================================================================== -->
+
+    <!-- Параметры постраничного вывода -->
+
+    <element name="paginationRequest" type="tns:paginationRequestType"/>
+    <element name="paginationResponse" type="tns:paginationResponseType"/>
+
+    <complexType name="paginationRequestType">
+        <annotation>
+            <documentation>
+                Параметры постраничного вывода (часть, передающаяся в запросе).
+            </documentation>
+            <appinfo>
+                <jaxb:class name="WsPaginationRequest"/>
+            </appinfo>
+        </annotation>
+
+        <sequence>
+            <element name="offset" type="nonNegativeInteger"/>
+            <element name="length" type="positiveInteger"/>
+        </sequence>
+    </complexType>
+
+    <complexType name="paginationResponseType">
+        <annotation>
+            <appinfo>
+                <jaxb:class name="WsPaginationResponse"/>
+            </appinfo>
+        </annotation>
+
+        <sequence>
+            <element name="offset" type="nonNegativeInteger"/>
+            <element name="length" type="nonNegativeInteger"/>
+            <element name="total" type="nonNegativeInteger"/>
+        </sequence>
+    </complexType>
+
+</schema>

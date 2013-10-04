@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<definitions targetNamespace="http://integrated-apps.com/ns/breloque/modules/locator"
+        xmlns="http://schemas.xmlsoap.org/wsdl/"
+        xmlns:breloque="http://integrated-apps.com/ns/breloque"
+        xmlns:jaxb="http://java.sun.com/xml/ns/jaxb"
+        xmlns:jaxws="http://java.sun.com/xml/ns/jaxws"
+        xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/"
+        xmlns:tns="http://integrated-apps.com/ns/breloque/modules/locator"
+        xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/"
+        xsi:schemaLocation="
+            http://java.sun.com/xml/ns/jaxb
+                http://java.sun.com/xml/ns/jaxb/bindingschema_2_0.xsd
+            http://java.sun.com/xml/ns/jaxws
+                http://java.sun.com/xml/ns/jaxws/wsdl_customizationschema_2_0.xsd">
+
+    <breloque:version>${project.version}</breloque:version>
+
+    <jaxws:bindings>
+        <jaxws:package name="com.integratedapps.ns.breloque.modules.locator"/>
+        <jaxws:enableWrapperStyle>false</jaxws:enableWrapperStyle>
+    </jaxws:bindings>
+
+    <import namespace="http://integrated-apps.com/ns/breloque"
+            location="../../base.wsdl"/>
+
+    <types>
+        <xsd:schema>
+            <xsd:import namespace="http://integrated-apps.com/ns/breloque/modules/locator"
+                    schemaLocation="service.xsd"/>
+        </xsd:schema>
+    </types>
+
+    <message name="locatorError">
+        <part name="error" element="tns:locatorError"/>
+    </message>
+
+    <message name="locate">
+        <part name="request" element="tns:locate"/>
+    </message>
+    <message name="locateResponse">
+        <part name="response" element="tns:locateResponse"/>
+    </message>
+
+    <portType name="locator">
+        <jaxws:bindings>
+            <jaxws:class name="WsLocator"/>
+        </jaxws:bindings>
+
+        <operation name="locate">
+            <input message="tns:locate"/>
+            <output message="tns:locateResponse"/>
+
+            <fault message="tns:locatorError" name="locatorError">
+                <jaxws:bindings>
+                    <jaxws:class name="WsLocatorError"/>
+                </jaxws:bindings>
+            </fault>
+        </operation>
+    </portType>
+
+    <binding name="locator" type="tns:locator">
+        <soap:binding transport="http://schemas.xmlsoap.org/soap/http" style="document"/>
+
+        <operation name="locate">
+            <soap:operation
+                    soapAction="http://integrated-apps.com/ns/breloque/modules/locator/locate"/>
+
+            <input>
+                <soap:body use="literal"/>
+            </input>
+            <output>
+                <soap:body use="literal"/>
+            </output>
+
+            <fault name="locatorError">
+                <soap:fault name="locatorError" use="literal"/>
+            </fault>
+        </operation>
+    </binding>
+
+    <service name="locator">
+        <jaxws:bindings>
+            <jaxws:class name="WsLocatorProvider"/>
+        </jaxws:bindings>
+
+        <port name="port" binding="tns:locator">
+            <soap:address location="REPLACE_WITH_ACTUAL_URL"/>
+        </port>
+    </service>
+
+</definitions>
+

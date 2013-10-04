@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<schema targetNamespace="http://integrated-apps.com/ns/breloque/modules/locator"
+        xmlns="http://www.w3.org/2001/XMLSchema"
+        xmlns:breloque="http://integrated-apps.com/ns/breloque"
+        xmlns:jaxb="http://java.sun.com/xml/ns/jaxb"
+        xmlns:jaxws="http://java.sun.com/xml/ns/jaxws"
+        xmlns:tns="http://integrated-apps.com/ns/breloque/modules/locator"
+        xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        elementFormDefault="qualified"
+        jaxb:version="2.0"
+        xsi:schemaLocation="
+            http://java.sun.com/xml/ns/jaxb
+                http://java.sun.com/xml/ns/jaxb/bindingschema_2_0.xsd
+            http://java.sun.com/xml/ns/jaxws
+                http://java.sun.com/xml/ns/jaxws/wsdl_customizationschema_2_0.xsd">
+
+    <annotation>
+        <appinfo>
+            <breloque:version>${project.version}</breloque:version>
+
+            <jaxb:schemaBindings>
+                <jaxb:package name="com.integratedapps.ns.breloque.modules.locator.types"/>
+            </jaxb:schemaBindings>
+        </appinfo>
+    </annotation>
+
+    <!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -->
+
+    <import namespace="http://integrated-apps.com/ns/breloque"
+            schemaLocation="../../base.xsd"/>
+
+    <!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -->
+
+    <!-- Базовые определения -->
+
+    <element name="locatorError" type="breloque:errorType"/>
+
+    <!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -->
+
+    <!-- Операции веб-сервисов -->
+
+    <element name="locate" type="tns:locateType"/>
+    <element name="locateResponse" type="tns:locateResponseType"/>
+
+    <complexType name="locateType">
+        <annotation>
+            <appinfo>
+                <jaxb:class name="WsLocate"/>
+            </appinfo>
+        </annotation>
+
+        <complexContent>
+            <extension base="breloque:requestType">
+                <sequence>
+                    <element name="subject" type="string"/>
+                    <element name="entityType" type="string" minOccurs="0"/>
+                    <element name="context" type="anyType"/>
+                </sequence>
+            </extension>
+        </complexContent>
+    </complexType>
+
+    <complexType name="locateResponseType">
+        <annotation>
+            <appinfo>
+                <jaxb:class name="WsLocateResponse"/>
+            </appinfo>
+        </annotation>
+
+        <complexContent>
+            <extension base="breloque:responseType">
+                <sequence>
+                    <element name="entity" type="anyType"/>
+                </sequence>
+            </extension>
+        </complexContent>
+    </complexType>
+
+    <!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -->
+
+    <!-- Общие типы данных -->
+
+</schema>

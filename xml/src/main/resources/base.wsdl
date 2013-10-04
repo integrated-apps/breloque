@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<definitions targetNamespace="http://integrated-apps.com/ns/breloque"
+        xmlns="http://schemas.xmlsoap.org/wsdl/"
+        xmlns:breloque="http://integrated-apps.com/ns/breloque"
+        xmlns:jaxb="http://java.sun.com/xml/ns/jaxb"
+        xmlns:jaxws="http://java.sun.com/xml/ns/jaxws"
+        xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/"
+        xmlns:tns="http://integrated-apps.com/ns/breloque"
+        xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/"
+        xsi:schemaLocation="
+            http://java.sun.com/xml/ns/jaxb
+                http://java.sun.com/xml/ns/jaxb/bindingschema_2_0.xsd
+            http://java.sun.com/xml/ns/jaxws
+                http://java.sun.com/xml/ns/jaxws/wsdl_customizationschema_2_0.xsd">
+
+    <breloque:version>${project.version}</breloque:version>
+
+    <jaxws:bindings>
+        <jaxws:package name="com.integratedapps.ns.breloque"/>
+        <jaxws:enableWrapperStyle>false</jaxws:enableWrapperStyle>
+    </jaxws:bindings>
+
+    <types>
+        <xsd:schema>
+            <xsd:import namespace="http://integrated-apps.com/ns/breloque"
+                    schemaLocation="base.xsd"/>
+        </xsd:schema>
+    </types>
+
+    <message name="systemError">
+        <part name="error" element="tns:systemError"/>
+    </message>
+
+    <message name="businessError">
+        <part name="error" element="tns:businessError"/>
+    </message>
+
+    <message name="status">
+        <part name="response" element="tns:status"/>
+    </message>
+
+</definitions>
