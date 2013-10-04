@@ -1,0 +1,150 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<!--
+    Copyright (C) 2013 integratedApps
+
+    Permission is hereby granted, free of charge, to any person obtaining a copy of this software
+    and associated documentation files (the "Software"), to deal in the Software without
+    restriction, including without limitation the rights to use, copy, modify, merge, publish,
+    distribute, sublicense, and/or sell copies of the Software, and to permit persons to whom the
+    Software is furnished to do so, subject to the following conditions:
+
+    The above copyright notice and this permission notice shall be included in all copies or
+    substantial portions of the Software.
+
+    THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING
+    BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND
+    NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM,
+    DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+    OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
+-->
+
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="
+                http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+
+    <modelVersion>4.0.0</modelVersion>
+
+    <parent>
+        <groupId>com.integrated-apps.breloque</groupId>
+        <artifactId>modules-locator</artifactId>
+        <version>3.0.0-SNAPSHOT</version>
+        <relativePath>..</relativePath>
+    </parent>
+
+    <groupId>com.integrated-apps.breloque</groupId>
+    <artifactId>modules-locator-ws_soap</artifactId>
+
+    <packaging>bundle</packaging>
+
+    <name>Breloque :: Modules :: Locator :: WS-SOAP</name>
+    <description>
+
+    </description>
+    <url>https://github.com/integrated-apps/breloque</url>
+
+    <properties>
+        <breloque.root>../../../..</breloque.root>
+    </properties>
+
+    <build>
+        <resources>
+            <resource>
+                <directory>src/main/resources</directory>
+            </resource>
+            <resource>
+                <directory>${wsimport.root}</directory>
+                <targetPath>META-INF/wsdl</targetPath>
+            </resource>
+        </resources>
+        <plugins>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-dependency-plugin</artifactId>
+                <configuration>
+                    <artifactItems>
+                        <artifactItem>
+                            <groupId>com.integrated-apps.breloque</groupId>
+                            <artifactId>xml</artifactId>
+                            <overWrite>true</overWrite>
+                            <includes>**/*.xsd,**/*.wsdl</includes>
+                            <outputDirectory>${wsimport.root}</outputDirectory>
+                        </artifactItem>
+                    </artifactItems>
+                </configuration>
+            </plugin>
+            <plugin>
+                <groupId>org.jvnet.jax-ws-commons</groupId>
+                <artifactId>jaxws-maven-plugin</artifactId>
+                <configuration>
+                    <wsdlDirectory>${wsimport.root}</wsdlDirectory>
+                    <wsdlFiles>
+                        <wsdlFile>modules/locator/service.wsdl</wsdlFile>
+                    </wsdlFiles>
+                    <wsdlLocation>META-INF/wsdl/modules/locator/service.wsdl</wsdlLocation>
+                </configuration>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.felix</groupId>
+                <artifactId>maven-bundle-plugin</artifactId>
+                <configuration>
+                    <instructions>
+                        <Import-Package>
+                            javax.jws,
+                            javax.jws.soap,
+                            javax.xml.bind,
+                            javax.xml.bind.annotation,
+                            javax.xml.namespace,
+                            javax.xml.ws,
+                            com.integratedapps.breloque.commons.api.data,
+                            com.integratedapps.breloque.commons.api.data.entities,
+                            com.integratedapps.breloque.commons.utils,
+                            com.integratedapps.breloque.modules.locator.api,
+                            com.integratedapps.breloque.modules.locator.api.entities,
+                            org.osgi.framework,
+                            org.osgi.service.blueprint
+                        </Import-Package>
+                        <Export-Package>
+                        </Export-Package>
+                        <Bundle-Activator>
+                            com.integratedapps.breloque.modules.locator.wssoap.osgi.Activator
+                        </Bundle-Activator>
+                    </instructions>
+                </configuration>
+            </plugin>
+        </plugins>
+    </build>
+
+    <dependencies>
+        <dependency>
+            <groupId>com.integrated-apps.breloque</groupId>
+            <artifactId>commons-api</artifactId>
+            <version>${project.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>com.integrated-apps.breloque</groupId>
+            <artifactId>commons-utils</artifactId>
+            <version>${project.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>com.integrated-apps.breloque</groupId>
+            <artifactId>modules-locator-api</artifactId>
+            <version>${project.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>com.integrated-apps.breloque</groupId>
+            <artifactId>xml</artifactId>
+            <version>${project.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.osgi</groupId>
+            <artifactId>org.osgi.core</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>junit</groupId>
+            <artifactId>junit</artifactId>
+        </dependency>
+    </dependencies>
+
+</project>

@@ -47,6 +47,7 @@
     <modules>
         <module>api</module>
         <module>impl</module>
+        <module>ws-soap</module>
     </modules>
 
     <properties>
