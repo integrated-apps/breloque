@@ -26,12 +26,21 @@ import java.util.Set;
  */
 public interface MarshallManager {
 
-    String marshal(
+    String marshall(
             Object entity,
             String mimeType) throws MarshallException;
 
-    <T> T unmarshal(
+    Object marshallToNative(
+            Object entity,
+            String mimeType) throws MarshallException;
+
+    <T> T unmarshall(
             String entity,
+            String mimeType,
+            Class<T> clazz) throws MarshallException;
+
+    <T> T unmarshallFromNative(
+            Object entity,
             String mimeType,
             Class<T> clazz) throws MarshallException;
 
