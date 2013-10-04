@@ -54,7 +54,32 @@ public final class StringUtils {
             return string.toUpperCase(locale);
         }
 
-        return string.substring(0, 1).toUpperCase() + string.substring(1);
+        return string.substring(0, 1).toUpperCase(locale) + string.substring(1);
+    }
+
+    public static String decapitalize(
+            final String string) {
+
+        return decapitalize(string, Locale.getDefault());
+    }
+
+    public static String decapitalize(
+            final String string,
+            final Locale locale) {
+
+        if (string == null) {
+            return null;
+        }
+
+        if ("".equals(string)) {
+            return "";
+        }
+
+        if (string.length() == 1) {
+            return string.toLowerCase(locale);
+        }
+
+        return string.substring(0, 1).toLowerCase(locale) + string.substring(1);
     }
 
     ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////

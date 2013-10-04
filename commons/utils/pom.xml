@@ -61,6 +61,9 @@
                 <configuration>
                     <instructions>
                         <Import-Package>
+                            javax.xml.datatype,
+                            javax.xml.parsers,
+                            org.w3c.dom,
                             org.osgi.framework,
                             org.osgi.service.blueprint
                         </Import-Package>
