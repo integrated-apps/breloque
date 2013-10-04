@@ -29,11 +29,18 @@ public interface MarshallManagerPlugin {
     String getMimeType(
             );
 
-    String marshal(
+    String marshall(
             Object entity) throws MarshallException;
 
-    <T> T unmarshal(
+    Object marshallToNative(
+            Object entity) throws MarshallException;
+
+    <T> T unmarshall(
             String entity,
+            Class<T> clazz) throws MarshallException;
+
+    <T> T unmarshallFromNative(
+            Object entity,
             Class<T> clazz) throws MarshallException;
 
 }

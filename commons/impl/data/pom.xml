@@ -63,6 +63,7 @@
                         <Import-Package>
                             com.integratedapps.breloque.commons.api.data,
                             com.integratedapps.breloque.commons.utils,
+                            org.w3c.dom,
                             org.osgi.framework,
                             org.osgi.service.blueprint
                         </Import-Package>

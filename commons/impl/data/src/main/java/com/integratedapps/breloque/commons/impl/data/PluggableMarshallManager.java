@@ -34,13 +34,13 @@ public class PluggableMarshallManager implements MarshallManager {
     private List<MarshallManagerPlugin> marshallers;
 
     @Override
-    public String marshal(
+    public String marshall(
             final Object entity,
             final String mimeType) throws MarshallException {
 
         for (MarshallManagerPlugin marshaler : marshallers) {
             if (marshaler.getMimeType().equals(mimeType)) {
-                return marshaler.marshal(entity);
+                return marshaler.marshall(entity);
             }
         }
 
@@ -48,14 +48,43 @@ public class PluggableMarshallManager implements MarshallManager {
     }
 
     @Override
-    public <T> T unmarshal(
+    public Object marshallToNative(
+            final Object entity,
+            final String mimeType) throws MarshallException {
+
+        for (MarshallManagerPlugin marshaler : marshallers) {
+            if (marshaler.getMimeType().equals(mimeType)) {
+                return marshaler.marshallToNative(entity);
+            }
+        }
+
+        throw new MarshallException("Unsupported mime type: '" + mimeType + "'.");
+    }
+
+    @Override
+    public <T> T unmarshall(
             final String entity,
             final String mimeType,
             final Class<T> clazz) throws MarshallException {
 
         for (MarshallManagerPlugin marshaler : marshallers) {
             if (marshaler.getMimeType().equals(mimeType)) {
-                return marshaler.unmarshal(entity, clazz);
+                return marshaler.unmarshall(entity, clazz);
+            }
+        }
+
+        throw new MarshallException("Unsupported mime type: '" + mimeType + "'.");
+    }
+
+    @Override
+    public <T> T unmarshallFromNative(
+            final Object entity,
+            final String mimeType,
+            final Class<T> clazz) throws MarshallException {
+
+        for (MarshallManagerPlugin marshaler : marshallers) {
+            if (marshaler.getMimeType().equals(mimeType)) {
+                return marshaler.unmarshallFromNative(entity, clazz);
             }
         }
 
@@ -73,6 +102,8 @@ public class PluggableMarshallManager implements MarshallManager {
 
         return result;
     }
+
+    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
     public void setMarshallers(
             final List<MarshallManagerPlugin> marshalers) {

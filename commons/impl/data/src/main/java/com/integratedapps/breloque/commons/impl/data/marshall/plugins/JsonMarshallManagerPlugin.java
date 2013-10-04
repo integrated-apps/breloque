@@ -35,15 +35,30 @@ public class JsonMarshallManagerPlugin implements MarshallManagerPlugin {
     }
 
     @Override
-    public String marshal(
+    public String marshall(
             final Object entity) throws MarshallException {
 
         throw new UnsupportedOperationException("Not supported yet.");
     }
 
     @Override
-    public <T> T unmarshal(
+    public Object marshallToNative(
+            final Object entity) throws MarshallException {
+
+        throw new UnsupportedOperationException("Not supported yet.");
+    }
+
+    @Override
+    public <T> T unmarshall(
             final String entity,
+            final Class<T> clazz) throws MarshallException {
+
+        throw new UnsupportedOperationException("Not supported yet.");
+    }
+
+    @Override
+    public <T> T unmarshallFromNative(
+            final Object entity,
             final Class<T> clazz) throws MarshallException {
 
         throw new UnsupportedOperationException("Not supported yet.");
