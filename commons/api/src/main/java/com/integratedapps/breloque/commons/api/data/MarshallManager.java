@@ -26,6 +26,26 @@ import java.util.Set;
  */
 public interface MarshallManager {
 
+    // Letting marshall manager know of an entity class  - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+    /**
+     * Lets the marshall manager know that a certain entity class is available. Depending on the marshall manager
+     * implementation it may undertake certain actions to prepare for handling this entity class, for example,
+     * generate code to serialize objects of the class.
+     *
+     * <p>
+     * In no way, though, should the implementation retain hard links on the provided class object.
+     *
+     * @param clazz
+     *      Entity class.
+     * @throws MarshallException
+     *      If something goes wrong while registering the entity class.
+     */
+    void register(
+            Class<?> clazz) throws MarshallException;
+
+    // Marshalling and unmarshalling entities  - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
     String marshall(
             Object entity,
             String mimeType) throws MarshallException;
@@ -43,6 +63,8 @@ public interface MarshallManager {
             Object entity,
             String mimeType,
             Class<T> clazz) throws MarshallException;
+
+    // Describing capabilities - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
     Set<String> listMimeTypes(
             );

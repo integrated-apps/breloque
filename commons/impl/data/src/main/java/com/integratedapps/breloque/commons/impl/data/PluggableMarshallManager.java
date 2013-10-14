@@ -24,6 +24,8 @@ import com.integratedapps.breloque.commons.impl.data.spi.MarshallManagerPlugin;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  *
@@ -31,7 +33,26 @@ import java.util.Set;
  */
 public class PluggableMarshallManager implements MarshallManager {
 
+    ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+    // Static
+
+    private static final Logger LOGGER = Logger.getLogger(PluggableMarshallManager.class.getName());
+
+    ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+    // Instance
+
     private List<MarshallManagerPlugin> marshallers;
+
+    // Letting marshall manager know of an entity class  - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+    @Override
+    public void register(
+            final Class<?> clazz) throws MarshallException {
+
+        LOGGER.log(Level.WARNING, "REGISTERED for MARSHALL: " + clazz.getName());
+    }
+
+    // Marshalling and unmarshalling entities  - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
     @Override
     public String marshall(
@@ -90,6 +111,8 @@ public class PluggableMarshallManager implements MarshallManager {
 
         throw new MarshallException("Unsupported mime type: '" + mimeType + "'.");
     }
+
+    // Describing capabilities - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
     @Override
     public Set<String> listMimeTypes(
