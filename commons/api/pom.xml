@@ -63,7 +63,8 @@
                         <Import-Package>
                             com.integratedapps.breloque.commons.utils,
                             org.osgi.framework,
-                            org.osgi.service.blueprint
+                            org.osgi.service.blueprint,
+                            org.osgi.util.tracker
                         </Import-Package>
                         <Export-Package>
                             com.integratedapps.breloque.commons.api.constants,
@@ -90,6 +91,10 @@
         <dependency>
             <groupId>org.osgi</groupId>
             <artifactId>org.osgi.core</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.osgi</groupId>
+            <artifactId>org.osgi.compendium</artifactId>
         </dependency>
         <dependency>
             <groupId>junit</groupId>
