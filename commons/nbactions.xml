@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<actions>
+    <action>
+        <actionName>run</actionName>
+        <goals>
+            <goal>install</goal>
+        </goals>
+        <activatedProfiles>
+            <activatedProfile>run-in-osgi</activatedProfile>
+        </activatedProfiles>
+    </action>
+</actions>
