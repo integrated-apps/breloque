@@ -27,6 +27,24 @@ import java.util.Map;
  */
 public interface StorageManager {
 
+    // Letting storage manager know of an entity class - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+    /**
+     * Lets the storage manager know that a certain entity class is available. Depending on the storage manager
+     * implementation it may undertake certain actions to prepare for handling this entity class, for example,
+     * initialize the database tables.
+     *
+     * <p>
+     * In no way, though, should the implementation retain hard links on the provided class object.
+     *
+     * @param clazz
+     *      Entity class.
+     * @throws StorageException
+     *      If something goes wrong while registering the entity class.
+     */
+    void register(
+            Class<?> clazz) throws StorageException;
+
     // Accessing, storing and deleting entities  - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
     <T extends Entity> List<T> list(

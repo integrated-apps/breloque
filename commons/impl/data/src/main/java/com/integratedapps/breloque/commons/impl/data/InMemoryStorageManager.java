@@ -26,12 +26,22 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  *
  * @author Kir Sorokin, kir.sorokin@integrated-apps.com
  */
 public final class InMemoryStorageManager implements StorageManager {
+
+    ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+    // Static
+
+    private static final Logger LOGGER = Logger.getLogger(InMemoryStorageManager.class.getName());
+
+    ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+    // Instance
 
     private long maxId;
 
@@ -42,6 +52,15 @@ public final class InMemoryStorageManager implements StorageManager {
 
         this.maxId = INITIAL_ID;
         this.entities = new HashMap<>();
+    }
+
+    // Letting storage manager know of an entity class - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+    @Override
+    public void register(
+            final Class<?> clazz) throws StorageException {
+
+        LOGGER.log(Level.WARNING, "REGISTERED for STORAGE: " + clazz.getName());
     }
 
     // Accessing, storing and deleting entities  - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
