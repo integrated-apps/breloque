@@ -175,12 +175,26 @@
                                 </goals>
                                 <configuration>
                                     <target>
-                                        <copy file="${project.jar}" toDir="${osgi.deploy.dir}"
-                                              verbose="true"/>
+                                        <taskdef resource="net/sf/antcontrib/antcontrib.properties"
+                                                 classpathref="maven.plugin.classpath" />
+                                        <if>
+                                            <equals arg1="${project.packaging}" arg2="bundle" />
+                                            <then>
+                                                <copy file="${project.jar}" toDir="${osgi.deploy.dir}"
+                                                          verbose="true"/>
+                                            </then>
+                                        </if>
                                     </target>
                                 </configuration>
                             </execution>
                         </executions>
+                        <dependencies>
+                            <dependency>
+                                <groupId>ant-contrib</groupId>
+                                <artifactId>ant-contrib</artifactId>
+                                <version>20020829</version>
+                            </dependency>
+                        </dependencies>
                     </plugin>
                 </plugins>
             </build>
