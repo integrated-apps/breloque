@@ -24,7 +24,9 @@ import com.integratedapps.breloque.commons.api.data.MarshallManager;
 import com.integratedapps.breloque.commons.api.data.StorageException;
 import com.integratedapps.breloque.commons.api.data.StorageManager;
 import java.net.URL;
+import java.util.ArrayList;
 import java.util.Enumeration;
+import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import org.osgi.framework.Bundle;
@@ -32,7 +34,6 @@ import org.osgi.framework.BundleActivator;
 import org.osgi.framework.BundleContext;
 import org.osgi.framework.BundleEvent;
 import org.osgi.framework.BundleListener;
-import org.osgi.framework.ServiceReference;
 import org.osgi.util.tracker.ServiceTracker;
 
 /**
@@ -53,6 +54,19 @@ public final class Activator implements BundleActivator, BundleListener {
 
     private ServiceTracker storageManagerTracker;
     private ServiceTracker marshallManagerTracker;
+
+    private long cachedClassesBench;
+    private List<Class<?>> cachedClassesForStorageManagers;
+    private List<Class<?>> cachedClassesForMarshallManagers;
+
+    public Activator(
+            ) {
+
+        cachedClassesBench = System.currentTimeMillis();
+
+        cachedClassesForStorageManagers = new ArrayList<>();
+        cachedClassesForMarshallManagers = new ArrayList<>();
+    }
 
     /**
      * Implements additional bundle setup logic, not described in the blueprint files.
@@ -115,15 +129,41 @@ public final class Activator implements BundleActivator, BundleListener {
     public void bundleChanged(
             final BundleEvent event) {
 
+        if (System.currentTimeMillis() - cachedClassesBench > ENTITIES_REGISTRATION_TIMEOUT) {
+            cachedClassesForStorageManagers.clear();
+            cachedClassesForMarshallManagers.clear();
+        }
+
         if (event.getType() == BundleEvent.STARTED) {
-            loadAndRegisterClasses(event.getBundle());
+            final Object[] storageManagers = storageManagerTracker.getServices();
+            final Object[] marshallManagers = marshallManagerTracker.getServices();
+
+            if (storageManagers != null) {
+                for (Class<?> clazz : cachedClassesForStorageManagers) {
+                    registerClassInStorageManagers(clazz, storageManagers);
+                }
+
+                cachedClassesForStorageManagers.clear();
+            }
+
+            if (marshallManagers != null) {
+                for (Class<?> clazz : cachedClassesForMarshallManagers) {
+                    registerClassInMarshallManagers(clazz, marshallManagers);
+                }
+
+                cachedClassesForMarshallManagers.clear();
+            }
+
+            loadAndRegisterClasses(event.getBundle(), storageManagers, marshallManagers);
         }
     }
 
     // Private ---------------------------------------------------------------------------------------------------------
 
     private void loadAndRegisterClasses(
-            final Bundle bundle) {
+            final Bundle bundle,
+            final Object[] storageManagers,
+            final Object[] marshallManagers) {
 
         try {
             final BundleContext context = bundle.getBundleContext();
@@ -145,28 +185,16 @@ public final class Activator implements BundleActivator, BundleListener {
                 }
 
                 if (isEntity) {
-                    final ServiceReference[] storageManagerRefs = storageManagerTracker.getServiceReferences();
-                    if (storageManagerRefs != null) {
-                        for (ServiceReference storageManagerRef : storageManagerRefs) {
-                            try {
-                                ((StorageManager) context.getService(storageManagerRef)).register(clazz);
-                            } catch (StorageException e) {
-                                LOGGER.log(Level.SEVERE,
-                                        "Failed to register class in a storage manager.", e);
-                            }
-                        }
+                    if (storageManagers != null) {
+                        registerClassInStorageManagers(clazz, storageManagers);
+                    } else {
+                        cachedClassesForStorageManagers.add(clazz);
                     }
 
-                    final ServiceReference[] marshallManagerRefs = marshallManagerTracker.getServiceReferences();
-                    if (marshallManagerRefs != null) {
-                        for (ServiceReference marshallManagerRef : marshallManagerRefs) {
-                            try {
-                                ((MarshallManager) context.getService(marshallManagerRef)).register(clazz);
-                            } catch (MarshallException e) {
-                                LOGGER.log(Level.SEVERE,
-                                        "Failed to register class in a marshall manager.", e);
-                            }
-                        }
+                    if (marshallManagers != null) {
+                        registerClassInMarshallManagers(clazz, marshallManagers);
+                    } else {
+                        cachedClassesForMarshallManagers.add(clazz);
                     }
                 }
             }
@@ -175,5 +203,38 @@ public final class Activator implements BundleActivator, BundleListener {
                     "Failed to load class for registration.", e);
         }
     }
+
+    private void registerClassInStorageManagers(
+            final Class<?> clazz,
+            final Object[] storageManagers) {
+
+        for (Object storageManager : storageManagers) {
+            try {
+                ((StorageManager) storageManager).register(clazz);
+            } catch (StorageException e) {
+                LOGGER.log(Level.SEVERE,
+                        "Failed to register class in a storage manager.", e);
+            }
+        }
+    }
+
+    private void registerClassInMarshallManagers(
+            final Class<?> clazz,
+            final Object[] marshallManagers) {
+
+        for (Object marshallManager : marshallManagers) {
+            try {
+                ((MarshallManager) marshallManager).register(clazz);
+            } catch (MarshallException e) {
+                LOGGER.log(Level.SEVERE,
+                        "Failed to register class in a marshall manager.", e);
+            }
+        }
+    }
+
+    ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+    // Constants
+
+    private static final long ENTITIES_REGISTRATION_TIMEOUT = 30L * 60L * 1000L; // 30 minutes in ms.
 
 }
