@@ -38,6 +38,14 @@ public class PluggableMarshallManager implements MarshallManager {
 
     private static final Logger LOGGER = Logger.getLogger(PluggableMarshallManager.class.getName());
 
+    private static final PluggableMarshallManager INSTANCE = new PluggableMarshallManager();
+
+    public static PluggableMarshallManager getInstance(
+            ) {
+
+        return INSTANCE;
+    }
+
     ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     // Instance
 
@@ -132,6 +140,14 @@ public class PluggableMarshallManager implements MarshallManager {
             final List<MarshallManagerPlugin> marshalers) {
 
         this.marshallers = marshalers;
+    }
+
+    // Private ---------------------------------------------------------------------------------------------------------
+
+    private PluggableMarshallManager(
+            ) {
+
+        // Does nothing.
     }
 
 }

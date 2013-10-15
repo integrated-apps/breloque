@@ -43,7 +43,8 @@ public class Test_LocatorAdminImplBasics {
         Mapping mapping;
         List<Mapping> mappings;
 
-        final InMemoryStorageManager storageManager = new InMemoryStorageManager();
+        final InMemoryStorageManager storageManager = InMemoryStorageManager.getInstance();
+        storageManager.reset();
 
         final LocatorAdminImpl locatorAdmin = new LocatorAdminImpl();
         locatorAdmin.setStorageManager(storageManager);
@@ -91,7 +92,8 @@ public class Test_LocatorAdminImplBasics {
         Mapping mapping;
         List<Mapping> mappings;
 
-        final InMemoryStorageManager storageManager = new InMemoryStorageManager();
+        final InMemoryStorageManager storageManager = InMemoryStorageManager.getInstance();
+        storageManager.reset();
 
         final LocatorAdminImpl locatorAdmin = new LocatorAdminImpl();
         locatorAdmin.setStorageManager(storageManager);
@@ -181,7 +183,8 @@ public class Test_LocatorAdminImplBasics {
         Mapping mapping;
         List<Mapping> mappings;
 
-        final InMemoryStorageManager storageManager = new InMemoryStorageManager();
+        final InMemoryStorageManager storageManager = InMemoryStorageManager.getInstance();
+        storageManager.reset();
 
         final LocatorAdminImpl locatorAdmin = new LocatorAdminImpl();
         locatorAdmin.setStorageManager(storageManager);
