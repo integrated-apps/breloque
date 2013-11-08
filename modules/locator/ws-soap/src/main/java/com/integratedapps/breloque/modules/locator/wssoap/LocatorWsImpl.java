@@ -31,10 +31,13 @@ import com.integratedapps.breloque.modules.locator.api.LocatorException;
 import com.integratedapps.ns.breloque.modules.locator.WsLocator;
 import com.integratedapps.ns.breloque.modules.locator.WsLocatorError;
 import com.integratedapps.ns.breloque.modules.locator.types.WsLocate;
+import com.integratedapps.ns.breloque.modules.locator.types.WsLocateAll;
+import com.integratedapps.ns.breloque.modules.locator.types.WsLocateAllResponse;
 import com.integratedapps.ns.breloque.modules.locator.types.WsLocateResponse;
 import com.integratedapps.ns.breloque.types.WsError;
 import com.integratedapps.ns.breloque.types.WsMetaData;
 import java.util.Date;
+import java.util.List;
 import java.util.Random;
 import java.util.UUID;
 import java.util.logging.Level;
@@ -180,6 +183,94 @@ public class LocatorWsImpl implements WsLocator {
             final MarshallManager marshallManager) {
 
         this.marshallManager = marshallManager;
+    }
+
+    @Override
+    public WsLocateAllResponse locateAll(WsLocateAll request) throws WsLocatorError {
+        final long benchmark = System.currentTimeMillis();
+
+        try {
+            // For debugging -- to be removed  - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+            DummyEntity dummyEntity = new DummyEntity();
+            dummyEntity.setDummyString("dummy string " + UUID.randomUUID());
+            dummyEntity.setDummyInt(new Random(System.currentTimeMillis()).nextInt());
+
+            dummyEntity = storageManager.store(dummyEntity);
+
+            locatorAdmin.add("test-subject", dummyEntity);
+            // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+            final List<Entity> entities = locator.locateAll(request.getSubject(), request.getContext());
+
+            if (entities == null) {
+                final WsError error = new WsError();
+                error.setCode("LCTR-400");
+                error.setMessage("No matching entity was found.");
+
+                throw new WsLocatorError("No matching entity was found.", error);
+            }
+
+            final WsLocateAllResponse response = new WsLocateAllResponse();
+            response.setEntity(marshallManager.marshallToNative(entities, MimeTypes.TEXT_XML));
+
+            // - - - - - - - - - - - - - - - - - -
+            response.setCallerId(request.getCallerId());
+            response.setCalleeId(getClass().getName());
+            response.setMessageExchangeId(request.getMessageExchangeId());
+            response.setMetaData(new WsMetaData());
+
+            WsMetaData.Property property;
+
+            property = new WsMetaData.Property();
+            property.setName("breloque.date-time");
+            property.setValue(XmlUtils.toXml(new Date()));
+            response.getMetaData().getProperties().add(property);
+
+            property = new WsMetaData.Property();
+            property.setName("breloque.processing-time");
+            property.setValue("" + (System.currentTimeMillis() - benchmark));
+            response.getMetaData().getProperties().add(property);
+
+            property = new WsMetaData.Property();
+            property.setName("breloque.component-id");
+            property.setValue("" + getClass().getName());
+            response.getMetaData().getProperties().add(property);
+            // - - - - - - - - - - - - - - - - - -
+
+            return response;
+        } catch (WsLocatorError e) {
+            LOGGER.log(Level.SEVERE,
+                    "Failed to 'locate'. Location failure.", e);
+
+            throw e;
+        } catch (LocatorException e) {
+            LOGGER.log(Level.SEVERE,
+                    "Failed to 'locate'. Location failure.", e);
+
+            final WsError error = new WsError();
+            error.setCode("LCTR-500");
+            error.setMessage(e.getMessage());
+
+            throw new WsLocatorError(e.getMessage(), error, e);
+        } catch (MarshallException e) {
+            LOGGER.log(Level.SEVERE,
+                    "Failed to 'locate'. Marshalling failure.", e);
+
+            final WsError error = new WsError();
+            error.setCode("LCTR-501");
+            error.setMessage(e.getMessage());
+
+            throw new WsLocatorError(e.getMessage(), error, e);
+        } catch (Exception e) {
+            LOGGER.log(Level.SEVERE,
+                    "Failed to 'locate'. Unknown failure.", e);
+
+            final WsError error = new WsError();
+            error.setCode("LCTR-999");
+            error.setMessage(e.getMessage());
+
+            throw new WsLocatorError(e.getMessage(), error, e);
+        }
     }
 
 }

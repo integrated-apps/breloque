@@ -77,6 +77,43 @@
             </extension>
         </complexContent>
     </complexType>
+    
+    <element name="locateAll" type="tns:locateAllType"/>
+    <element name="locateAllResponse" type="tns:locateAllResponseType"/>
+
+    <complexType name="locateAllType">
+        <annotation>
+            <appinfo>
+                <jaxb:class name="WsLocateAll"/>
+            </appinfo>
+        </annotation>
+
+        <complexContent>
+            <extension base="breloque:requestType">
+                <sequence>
+                    <element name="subject" type="string"/>
+                    <element name="entityType" type="string" minOccurs="0"/>
+                    <element name="context" type="anyType"/>
+                </sequence>
+            </extension>
+        </complexContent>
+    </complexType>
+
+    <complexType name="locateAllResponseType">
+        <annotation>
+            <appinfo>
+                <jaxb:class name="WsLocateAllResponse"/>
+            </appinfo>
+        </annotation>
+
+        <complexContent>
+            <extension base="breloque:responseType">
+                <sequence>
+                    <element name="entity" type="anyType"/>
+                </sequence>
+            </extension>
+        </complexContent>
+    </complexType>
 
     <!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -->
 

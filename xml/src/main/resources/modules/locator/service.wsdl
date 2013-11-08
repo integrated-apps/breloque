@@ -43,6 +43,13 @@
     <message name="locateResponse">
         <part name="response" element="tns:locateResponse"/>
     </message>
+    
+    <message name="locateAll">
+        <part name="request" element="tns:locateAll"/>
+    </message>
+    <message name="locateAllResponse">
+        <part name="response" element="tns:locateAllResponse"/>
+    </message>
 
     <portType name="locator">
         <jaxws:bindings>
@@ -59,12 +66,39 @@
                 </jaxws:bindings>
             </fault>
         </operation>
+        
+        <operation name="locateAll">
+            <input message="tns:locateAll"/>
+            <output message="tns:locateAllResponse"/>
+
+            <fault message="tns:locatorError" name="locatorError">
+                <jaxws:bindings>
+                    <jaxws:class name="WsLocatorError"/>
+                </jaxws:bindings>
+            </fault>
+        </operation>
     </portType>
 
     <binding name="locator" type="tns:locator">
         <soap:binding transport="http://schemas.xmlsoap.org/soap/http" style="document"/>
 
         <operation name="locate">
+            <soap:operation
+                    soapAction="http://integrated-apps.com/ns/breloque/modules/locator/locate"/>
+
+            <input>
+                <soap:body use="literal"/>
+            </input>
+            <output>
+                <soap:body use="literal"/>
+            </output>
+
+            <fault name="locatorError">
+                <soap:fault name="locatorError" use="literal"/>
+            </fault>
+        </operation>
+        
+        <operation name="locateAll">
             <soap:operation
                     soapAction="http://integrated-apps.com/ns/breloque/modules/locator/locate"/>
 
