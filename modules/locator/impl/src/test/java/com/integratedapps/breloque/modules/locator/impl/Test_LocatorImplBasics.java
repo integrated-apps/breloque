@@ -44,7 +44,8 @@ public class Test_LocatorImplBasics {
 
         Entity result;
 
-        final InMemoryStorageManager storageManager = new InMemoryStorageManager();
+        final InMemoryStorageManager storageManager = InMemoryStorageManager.getInstance();
+        storageManager.reset();
 
         final RhinoEvaluatorEngine evaluatorEngine = new RhinoEvaluatorEngine();
         final PluggableScriptEvaluator scriptEvaluator = new PluggableScriptEvaluator();
@@ -84,7 +85,8 @@ public class Test_LocatorImplBasics {
 
         Entity result;
 
-        final InMemoryStorageManager storageManager = new InMemoryStorageManager();
+        final InMemoryStorageManager storageManager = InMemoryStorageManager.getInstance();
+        storageManager.reset();
 
         final RhinoEvaluatorEngine evaluatorEngine = new RhinoEvaluatorEngine();
         final PluggableScriptEvaluator scriptEvaluator = new PluggableScriptEvaluator();
@@ -135,7 +137,8 @@ public class Test_LocatorImplBasics {
 
         Entity result;
 
-        final InMemoryStorageManager storageManager = new InMemoryStorageManager();
+        final InMemoryStorageManager storageManager = InMemoryStorageManager.getInstance();
+        storageManager.reset();
 
         final RhinoEvaluatorEngine evaluatorEngine = new RhinoEvaluatorEngine();
         final PluggableScriptEvaluator scriptEvaluator = new PluggableScriptEvaluator();
@@ -186,7 +189,8 @@ public class Test_LocatorImplBasics {
 
         Entity result;
 
-        final InMemoryStorageManager storageManager = new InMemoryStorageManager();
+        final InMemoryStorageManager storageManager = InMemoryStorageManager.getInstance();
+        storageManager.reset();
 
         final RhinoEvaluatorEngine evaluatorEngine = new RhinoEvaluatorEngine();
         final PluggableScriptEvaluator scriptEvaluator = new PluggableScriptEvaluator();
@@ -233,7 +237,8 @@ public class Test_LocatorImplBasics {
 
         Entity result;
 
-        final InMemoryStorageManager storageManager = new InMemoryStorageManager();
+        final InMemoryStorageManager storageManager = InMemoryStorageManager.getInstance();
+        storageManager.reset();
 
         final RhinoEvaluatorEngine evaluatorEngine = new RhinoEvaluatorEngine();
         final PluggableScriptEvaluator scriptEvaluator = new PluggableScriptEvaluator();
@@ -281,7 +286,8 @@ public class Test_LocatorImplBasics {
 
         Entity result;
 
-        final InMemoryStorageManager storageManager = new InMemoryStorageManager();
+        final InMemoryStorageManager storageManager = InMemoryStorageManager.getInstance();
+        storageManager.reset();
 
         final RhinoEvaluatorEngine evaluatorEngine = new RhinoEvaluatorEngine();
         final PluggableScriptEvaluator scriptEvaluator = new PluggableScriptEvaluator();

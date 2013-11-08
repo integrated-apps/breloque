@@ -41,12 +41,14 @@
              interface="com.integratedapps.breloque.commons.api.data.MarshallManager"/>
 
     <bean id="inMemoryStorageManager"
-          class="com.integratedapps.breloque.commons.impl.data.InMemoryStorageManager"/>
+          class="com.integratedapps.breloque.commons.impl.data.InMemoryStorageManager"
+          factory-method="getInstance"/>
 
     <bean id="pluggableMarshallManager"
-          class="com.integratedapps.breloque.commons.impl.data.PluggableMarshallManager">
+          class="com.integratedapps.breloque.commons.impl.data.PluggableMarshallManager"
+          factory-method="getInstance">
 
-          <property name="marshallers" ref="marshallManagerPluginsRef"/>
+        <property name="marshallers" ref="marshallManagerPluginsRef"/>
     </bean>
 
     <bean id="jsonMarshallManagerPlugin"

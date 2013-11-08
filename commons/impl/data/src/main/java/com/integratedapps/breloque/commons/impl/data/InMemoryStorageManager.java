@@ -40,19 +40,19 @@ public final class InMemoryStorageManager implements StorageManager {
 
     private static final Logger LOGGER = Logger.getLogger(InMemoryStorageManager.class.getName());
 
+    private static final InMemoryStorageManager INSTANCE = new InMemoryStorageManager();
+
+    public static InMemoryStorageManager getInstance(
+            ) {
+
+        return INSTANCE;
+    }
+
     ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     // Instance
 
     private long maxId;
-
     private Map<String, List<Entity>> entities;
-
-    public InMemoryStorageManager(
-            ) {
-
-        this.maxId = INITIAL_ID;
-        this.entities = new HashMap<>();
-    }
 
     // Letting storage manager know of an entity class - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
@@ -395,6 +395,23 @@ public final class InMemoryStorageManager implements StorageManager {
             final String trid) throws StorageException {
 
         // No support for transactions.
+    }
+
+    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+    public void reset(
+            ) {
+
+        maxId = INITIAL_ID;
+        entities = new HashMap<>();
+    }
+
+    // Private ---------------------------------------------------------------------------------------------------------
+
+    private InMemoryStorageManager(
+            ) {
+
+        reset();
     }
 
     ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
